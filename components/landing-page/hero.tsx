@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import gsap from "gsap";
@@ -10,6 +10,7 @@ import {
   CalendarCheck,
   Sparkles,
   Clock,
+  X,
 } from "lucide-react";
 import { heroContent } from "@/content/hero";
 import WhatsAppTeamInbox from "@/components/landing-page/WhatsAppTeamInbox";
@@ -21,6 +22,25 @@ const GradientASCII = dynamic(() => import("@/reuseable/gradientAscii"), {
 
 export function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isFormOpen, setIsFormOpen] = useState(false);
+
+  // Lock body scroll and listen for Escape key when form modal is open
+  useEffect(() => {
+    if (!isFormOpen) return;
+
+    document.body.style.overflow = "hidden";
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setIsFormOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isFormOpen]);
 
   useEffect(() => {
     // GSAP context for clean lifecycle scoping and cleanup
@@ -197,21 +217,22 @@ export function Hero() {
 
           {/* CTA Buttons */}
           <div className="hero-cta-group mt-8 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 font-secondary">
-            <Link
-              href={heroContent.primaryCta.href}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-zinc-950 px-7 py-3.5 text-base font-semibold text-white shadow-lg shadow-zinc-950/15 transition-all hover:bg-zinc-800 hover:shadow-xl active:scale-98 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground tracking-tight"
+            <button
+              type="button"
+              onClick={() => setIsFormOpen(true)}
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-zinc-950 px-7 py-3.5 text-base font-semibold text-white shadow-lg shadow-zinc-950/15 transition-all hover:bg-zinc-800 hover:shadow-xl active:scale-98 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground tracking-tight cursor-pointer"
             >
               <span>{heroContent.primaryCta.label}</span>
               <ArrowUpRight className="h-4 w-4 opacity-75" aria-hidden="true" />
-            </Link>
-
+            </button>
+{/* 
             <Link
               href={heroContent.secondaryCta.href}
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full border border-zinc-300 dark:border-zinc-700 bg-white/70 dark:bg-zinc-900/70 px-7 py-3.5 text-base font-semibold text-black dark:text-zinc-200 backdrop-blur-sm transition-all hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:border-zinc-400 active:scale-98 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground tracking-tight"
             >
               <span>{heroContent.secondaryCta.label}</span>
               <ArrowUpRight className="h-4 w-4 opacity-75" aria-hidden="true" />
-            </Link>
+            </Link> */}
           </div>
         </div>
 
@@ -292,6 +313,63 @@ export function Hero() {
           </div>
         </div>
       </div>
+
+      {/* Early Access Brevo Form Modal Dialog */}
+      {isFormOpen && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="early-access-modal-title"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-zinc-950/75 backdrop-blur-md animate-in fade-in duration-200"
+          onClick={() => setIsFormOpen(false)}
+        >
+          <div
+            className="relative w-full max-w-[580px] rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-[#faf8f5] dark:bg-zinc-900 shadow-2xl p-4 sm:p-6 overflow-hidden animate-in zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="flex items-center justify-between pb-3 mb-2 border-b border-zinc-200/80 dark:border-zinc-800">
+              <div className="flex items-center gap-2">
+                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                <h3
+                  id="early-access-modal-title"
+                  className="font-figtree text-sm sm:text-base font-bold text-zinc-900 dark:text-zinc-100"
+                >
+                  Join the Early Access List
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsFormOpen(false)}
+                className="p-1.5 rounded-full text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-200/60 dark:hover:bg-zinc-800 transition-colors focus:outline-none cursor-pointer"
+                aria-label="Close dialog"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            {/* Brevo Subscription Form Iframe */}
+            <div className="w-full flex items-center justify-center overflow-hidden rounded-2xl bg-white dark:bg-zinc-950 p-1 sm:p-2 shadow-inner">
+              <iframe
+                width="540"
+                height="305"
+                src="https://ddf79caa.sibforms.com/v2/serve/MUIFAJ_vJUbWRjj234qJl6CCk0b-v2AfwADxwx3Y-82cUZ0a-UlNUt4P1cetGqVygh7H_1cyd9mEq8OZxmxALw-wTkkHN9TTihEh8ofqEubrOvulEqqwyYHGZBPU2ExSTJNKOoP2HaRrLJkAYddgfiix5ead6yO8cuAl2fp3sz_gsJ-rtjjot6pJx0Mm4992UBAfg0jaqjveA-mk1g=="
+                frameBorder="0"
+                scrolling="auto"
+                allowFullScreen
+                style={{
+                  display: "block",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  maxWidth: "100%",
+                }}
+                className="w-full border-0 min-h-[305px]"
+                title="ctrlF Early Access Form"
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
