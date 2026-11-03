@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import gsap from "gsap";
@@ -13,6 +12,7 @@ import {
   Clock,
 } from "lucide-react";
 import { heroContent } from "@/content/hero";
+import WhatsAppTeamInbox from "@/components/landing-page/WhatsAppTeamInbox";
 
 // Dynamically import WebGL GradientASCII with SSR disabled for optimal hydration
 const GradientASCII = dynamic(() => import("@/reuseable/gradientAscii"), {
@@ -215,65 +215,57 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Dashboard Mockup Display */}
-        <div className="hero-dashboard-wrapper relative mx-auto mt-14 sm:mt-18 lg:mt-10 max-w-5xl">
+        {/* Dashboard Mockup Display - Adaptive: Smartphone frame on mobile, Widescreen Team Inbox on desktop */}
+        <div className="hero-dashboard-wrapper relative mx-auto mt-12 sm:mt-18 lg:mt-12 max-w-[340px] xs:max-w-[375px] sm:max-w-6xl">
           {/* Subtle glowing halo behind the dashboard */}
-          {/* <div
-            className="absolute -inset-1.5 rounded-3xl bg-gradient-to-b from-amber-500/20 via-orange-500/10 to-transparent blur-xl"
+          <div
+            className="absolute -inset-1 rounded-3xl bg-gradient-to-b from-emerald-500/15 via-amber-500/10 to-transparent blur-2xl pointer-events-none"
             aria-hidden="true"
-          /> */}
+          />
 
-          {/* Main frame */}
-          <div className="relative rounded-2xl border border-zinc-200/90 dark:border-zinc-800/90 bg-[#faf8f5] dark:bg-zinc-950/90 p-2 sm:p-3 shadow-2xl shadow-zinc-950/10 backdrop-blur-md">
-            <div className="overflow-hidden rounded-xl border border-zinc-100 dark:border-zinc-800 bg-[#faf8f5] dark:bg-zinc-900">
-              <Image
-                src={heroContent.dashboardImage.src}
-                alt={heroContent.dashboardImage.alt}
-                width={heroContent.dashboardImage.width}
-                height={heroContent.dashboardImage.height}
-                priority
-                className="h-auto w-full object-cover transition-transform duration-700"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1150px"
-              />
+          {/* Main frame with phone bezel on mobile */}
+          <div className="relative rounded-[32px] sm:rounded-2xl border-2 sm:border border-zinc-800 sm:border-zinc-200/90 dark:border-zinc-800 bg-zinc-900 sm:bg-[#faf8f5] dark:bg-zinc-950 p-1 sm:p-2.5 shadow-2xl shadow-zinc-950/25 sm:shadow-zinc-950/15 backdrop-blur-md">
+            <div className="overflow-hidden rounded-[26px] sm:rounded-xl border border-zinc-800 sm:border-zinc-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-inner">
+              <WhatsAppTeamInbox />
             </div>
           </div>
 
-          {/* Floating Card 1: WhatsApp Confirmation (Top Left) */}
-          <div className="hero-floating-card hero-floating-card-1 absolute -left-6 lg:-left-10 top-12 hidden lg:flex items-center gap-3.5 rounded-2xl border border-zinc-200/80 dark:border-zinc-800 bg-white/95 dark:bg-zinc-900/95 p-3.5 shadow-xl shadow-zinc-900/8 backdrop-blur-md max-w-xs z-20">
+          {/* Floating Card 1: WhatsApp First Response SLA (Top Left) */}
+          <div className="hero-floating-card hero-floating-card-1 absolute -left-4 lg:-left-8 top-14 hidden lg:flex items-center gap-3.5 rounded-2xl border border-zinc-200/90 dark:border-zinc-800 bg-white/95 dark:bg-zinc-900/95 p-3.5 shadow-xl shadow-zinc-900/10 backdrop-blur-md max-w-xs z-30">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-500/15 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400">
               <CalendarCheck className="h-5 w-5" aria-hidden="true" />
             </div>
             <div>
-              <div className="font-secondary text-xs font-semibold text-zinc-900 dark:text-zinc-100">
+              <div className="font-figtree text-xs font-bold text-zinc-900 dark:text-zinc-100">
                 {heroContent.notifications[0].title}
               </div>
-              <div className="font-secondary text-[11px] text-zinc-500 dark:text-zinc-400">
+              <div className="font-figtree text-[11px] text-zinc-500 dark:text-zinc-400">
                 {heroContent.notifications[0].subtitle}
               </div>
-              <div className="mt-0.5 font-secondary text-[10px] font-medium text-emerald-700 dark:text-emerald-400">
+              <div className="mt-0.5 font-figtree text-[10px] font-semibold text-emerald-700 dark:text-emerald-400">
                 {heroContent.notifications[0].meta}
               </div>
             </div>
           </div>
 
-          {/* Floating Card 2: AI Queue & Auto-Followup (Bottom Left) */}
-          <div className="hero-floating-card hero-floating-card-2 absolute -left-8 lg:-left-12 -bottom-6 hidden lg:flex flex-col gap-2 rounded-2xl border border-amber-200/70 dark:border-zinc-800 bg-amber-50/95 dark:bg-zinc-900/95 p-4 shadow-xl shadow-amber-900/5 backdrop-blur-md max-w-xs z-20">
+          {/* Floating Card 2: Shared Team Inbox Multi-Agent (Bottom Left) */}
+          <div className="hero-floating-card hero-floating-card-2 absolute -left-6 lg:-left-10 -bottom-8 hidden lg:flex flex-col gap-2 rounded-2xl border border-amber-200/80 dark:border-zinc-800 bg-white/95 dark:bg-zinc-900/95 p-4 shadow-xl shadow-amber-900/10 backdrop-blur-md max-w-xs z-30">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-1.5 font-secondary text-xs font-semibold text-amber-900 dark:text-amber-300">
+              <div className="flex items-center gap-1.5 font-figtree text-xs font-bold text-zinc-900 dark:text-zinc-100">
                 <Sparkles className="h-3.5 w-3.5 text-amber-600" />
                 <span>{heroContent.notifications[1].title}</span>
               </div>
-              <span className="font-secondary text-[10px] rounded-full bg-amber-200/60 dark:bg-amber-900/40 px-2 py-0.5 text-amber-800 dark:text-amber-300 font-medium">
-                Auto
+              <span className="font-figtree text-[10px] rounded-full bg-emerald-100 dark:bg-emerald-950/60 px-2 py-0.5 text-emerald-800 dark:text-emerald-300 font-semibold">
+                Live
               </span>
             </div>
-            <p className="font-secondary text-xs text-zinc-700 dark:text-zinc-300 leading-snug">
+            <p className="font-figtree text-xs text-zinc-600 dark:text-zinc-300 leading-snug">
               {heroContent.notifications[1].subtitle}
             </p>
             {heroContent.notifications[1].action && (
               <Link
                 href={heroContent.notifications[1].action.href}
-                className="inline-flex items-center gap-1 font-secondary text-[11px] font-semibold text-amber-800 dark:text-amber-400 hover:underline"
+                className="inline-flex items-center gap-1 font-figtree text-[11px] font-semibold text-emerald-700 dark:text-emerald-400 hover:underline"
               >
                 <span>{heroContent.notifications[1].action.label}</span>
                 <ArrowRight className="h-3 w-3" />
@@ -281,19 +273,19 @@ export function Hero() {
             )}
           </div>
 
-          {/* Floating Card 3: Recovered No-Show (Right Middle) */}
-          <div className="hero-floating-card hero-floating-card-3 absolute -right-6 lg:-right-10 top-1/3 hidden lg:flex items-center gap-3.5 rounded-2xl border border-zinc-200/80 dark:border-zinc-800 bg-white/95 dark:bg-zinc-900/95 p-3.5 shadow-xl shadow-zinc-900/8 backdrop-blur-md max-w-xs z-20">
+          {/* Floating Card 3: Recovered No-Show Revenue (Right) */}
+          <div className="hero-floating-card hero-floating-card-3 absolute -right-4 lg:-right-8 top-1/4 hidden lg:flex items-center gap-3.5 rounded-2xl border border-zinc-200/90 dark:border-zinc-800 bg-white/95 dark:bg-zinc-900/95 p-3.5 shadow-xl shadow-zinc-900/10 backdrop-blur-md max-w-xs z-30">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-500/15 text-amber-600 dark:bg-amber-500/20 dark:text-amber-400">
               <Clock className="h-5 w-5" aria-hidden="true" />
             </div>
             <div>
-              <div className="font-secondary text-xs font-semibold text-zinc-900 dark:text-zinc-100">
+              <div className="font-figtree text-xs font-bold text-zinc-900 dark:text-zinc-100">
                 {heroContent.notifications[2].title}
               </div>
-              <div className="font-secondary text-[11px] text-zinc-500 dark:text-zinc-400">
+              <div className="font-figtree text-[11px] text-zinc-500 dark:text-zinc-400">
                 {heroContent.notifications[2].subtitle}
               </div>
-              <div className="mt-0.5 font-secondary text-[10px] font-medium text-amber-700 dark:text-amber-400">
+              <div className="mt-0.5 font-figtree text-[10px] font-semibold text-amber-700 dark:text-amber-400">
                 {heroContent.notifications[2].meta}
               </div>
             </div>

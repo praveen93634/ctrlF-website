@@ -241,7 +241,7 @@ function OrbitRing({
               <div
                 className={cn(
                   "relative flex items-center justify-center",
-                  "w-11 h-11 sm:w-12 sm:h-12",
+                  "w-8 h-8 sm:w-12 sm:h-12",
                   "bg-white dark:bg-zinc-900",
                   "border border-zinc-200/90 dark:border-zinc-800",
                   "shadow-[0_4px_16px_rgba(0,0,0,0.06)] dark:shadow-[0_4px_16px_rgba(0,0,0,0.4)]",
